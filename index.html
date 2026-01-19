@@ -16,23 +16,17 @@
     .sub{opacity:.88;font-size:14px}
     .green{color:#9ff2c3}.orange{color:#ffd08a}.gray{color:#a9b7c6}
     .btn{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #2a3b52;background:#0f1620;color:#e8eef6;font-size:14px;cursor:pointer;margin-top:12px}
+    .msg{margin-top:10px;font-size:14px;opacity:.92}
     .modalBack{position:fixed;inset:0;display:none;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:18px}
     .modal{width:100%;max-width:560px;background:#121a24;border:1px solid #1e2a3a;border-radius:16px;padding:16px}
     .modal h2{margin:0 0 10px;font-size:18px}
     .hint{opacity:.88;font-size:13px;margin:0 0 12px}
-    .err{margin-top:10px;font-size:12px;opacity:.9}
   </style>
 </head>
 
 <body>
   <div class="wrap">
     <h1>ספירה לאחור</h1>
-
-    <!-- Debug: if you click and nothing changes, JS isn't running -->
-    <button class="btn" onclick="document.getElementById('debug').textContent='JS עובד ✅';">
-      בדיקת JS
-    </button>
-    <div id="debug" class="err"></div>
 
     <!-- 1) Letter first -->
     <div class="card">
@@ -42,10 +36,22 @@
       </div>
       <div class="big orange" id="daysLetter">—</div>
       <div class="sub" id="textLetter">טוען…</div>
+
       <button class="btn" id="openLetter">הצג פרטי מכתב (ללא נוסח)</button>
     </div>
 
-    <!-- 2) Start work second -->
+    <!-- 2) Resignation submitted (new card) -->
+    <div class="card">
+      <div class="row">
+        <div class="label">התפטרות בוצעה</div>
+        <div class="pill">✔️ סטטוס</div>
+      </div>
+      <div class="sub">כשתגיש – לחץ על הכפתור כדי לסמן שהכול הושלם.</div>
+      <button class="btn" id="toggleResign">סמן “הגשתי התפטרות”</button>
+      <div class="msg" id="resignStatus"></div>
+    </div>
+
+    <!-- 3) Start work -->
     <div class="card">
       <div class="row">
         <div class="label">תחילת עבודה רשמית</div>
@@ -53,6 +59,9 @@
       </div>
       <div class="big orange" id="daysStart">—</div>
       <div class="sub" id="textStart">טוען…</div>
+
+      <button class="btn" id="btnEncourage">תן לי מילות עידוד</button>
+      <div class="msg" id="encourageMsg"></div>
     </div>
   </div>
 
@@ -73,7 +82,7 @@
   </div>
 
   <script>
-    // Fixed dates (no auto year switching)
+    // Fixed dates
     var TARGET_LETTER = new Date(2026, 1, 20, 0, 0, 0, 0); // 20.02.2026
     var TARGET_START  = new Date(2026, 3, 7, 0, 0, 0, 0);  // 07.04.2026
 
@@ -108,28 +117,75 @@
         textEl.textContent = "היום זה היום";
         return;
       }
+
       daysEl.classList.add("gray");
       daysEl.textContent = "0";
       textEl.textContent = "התאריך עבר";
     }
 
     function render() {
-      var daysLetterEl = document.getElementById("daysLetter");
-      var textLetterEl = document.getElementById("textLetter");
-      var daysStartEl  = document.getElementById("daysStart");
-      var textStartEl  = document.getElementById("textStart");
-
-      setView(daysLetterEl, textLetterEl, daysUntil(TARGET_LETTER));
-      setView(daysStartEl,  textStartEl,  daysUntil(TARGET_START));
+      setView(
+        document.getElementById("daysLetter"),
+        document.getElementById("textLetter"),
+        daysUntil(TARGET_LETTER)
+      );
+      setView(
+        document.getElementById("daysStart"),
+        document.getElementById("textStart"),
+        daysUntil(TARGET_START)
+      );
     }
 
-    // Run
-    try {
-      render();
-      setInterval(render, 60000);
-    } catch (e) {
-      document.getElementById("debug").textContent = "JS שגיאה: " + e;
+    // Resignation status (saved in browser)
+    function loadResign() {
+      var v = localStorage.getItem("resign_done");
+      return v === "1";
     }
+    function saveResign(done) {
+      localStorage.setItem("resign_done", done ? "1" : "0");
+    }
+    function updateResignUI() {
+      var done = loadResign();
+      var btn = document.getElementById("toggleResign");
+      var text = document.getElementById("resignStatus");
+      if (done) {
+        btn.textContent = "בטל סימון (עוד לא הוגש)";
+        text.innerHTML = "<span class='green'>סומן כהוגש ✅</span>";
+      } else {
+        btn.textContent = "סמן “הגשתי התפטרות”";
+        text.innerHTML = "<span class='gray'>עדיין לא הוגש</span>";
+      }
+    }
+
+    // Encouragement messages
+    var ENCOURAGE = [
+      "את בדרך הנכונה. צעד אחד בכל פעם.",
+      "עוד קצת וזה שלך. נשאר רק לסגור פינות.",
+      "תזכורי למה התחלת. זה שווה את זה.",
+      "את לא חייבת מושלם, רק עקבי וקצת כל יום.",
+      "כל יום שעובר מקרב אותך לדבר הבא.",
+      "את חזקה. אתה מתקדמת. את מסיימת."
+    ];
+    function pickEncourage() {
+      var i = Math.floor(Math.random() * ENCOURAGE.length);
+      return ENCOURAGE[i];
+    }
+
+    // Init
+    render();
+    setInterval(render, 60000);
+
+    updateResignUI();
+
+    document.getElementById("toggleResign").addEventListener("click", function () {
+      var done = loadResign();
+      saveResign(!done);
+      updateResignUI();
+    });
+
+    document.getElementById("btnEncourage").addEventListener("click", function () {
+      document.getElementById("encourageMsg").textContent = pickEncourage();
+    });
 
     // Modal
     var modalBack = document.getElementById("modalBack");
