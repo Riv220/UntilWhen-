@@ -4,200 +4,116 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>ספירה לאחור</title>
+
   <style>
     body{margin:0;padding:24px;background:#0b0f14;color:#e8eef6;font-family:Arial,sans-serif}
-    .wrap{max-width:560px;margin:0 auto}
-    h1{margin:0 0 14px;font-size:24px}
-    .card{background:#121a24;border:1px solid #1e2a3a;border-radius:16px;padding:16px;margin:12px 0;box-shadow:0 6px 18px rgba(0,0,0,.25)}
+    .wrap{max-width:600px;margin:0 auto}
+    h1{margin:0 0 18px;font-size:26px}
+    .card{background:#121a24;border:1px solid #1e2a3a;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 6px 18px rgba(0,0,0,.25)}
     .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .label{opacity:.88;font-size:14px}
-    .pill{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #2a3b52;background:#0f1620;white-space:nowrap}
-    .big{font-size:56px;font-weight:800;line-height:1;margin:10px 0 8px}
-    .sub{opacity:.88;font-size:14px}
+    .label{opacity:.9;font-size:15px}
+    .pill{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #2a3b52;background:#0f1620}
+    .big{font-size:40px;font-weight:800;line-height:1.2;margin:12px 0}
+    .sub{opacity:.9;font-size:14px}
     .green{color:#9ff2c3}.orange{color:#ffd08a}.gray{color:#a9b7c6}
-    .btn{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #2a3b52;background:#0f1620;color:#e8eef6;font-size:14px;cursor:pointer;margin-top:12px}
-    .msg{margin-top:10px;font-size:14px;opacity:.92}
-    .modalBack{position:fixed;inset:0;display:none;background:rgba(0,0,0,.55);align-items:center;justify-content:center;padding:18px}
-    .modal{width:100%;max-width:560px;background:#121a24;border:1px solid #1e2a3a;border-radius:16px;padding:16px}
-    .modal h2{margin:0 0 10px;font-size:18px}
-    .hint{opacity:.88;font-size:13px;margin:0 0 12px}
+    .btn{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #2a3b52;background:#0f1620;color:#e8eef6;font-size:15px;cursor:pointer;margin-top:12px}
+    .msg{margin-top:10px;font-size:15px;opacity:.95}
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <h1>ספירה לאחור</h1>
+<div class="wrap">
+  <h1>ספירה לאחור</h1>
 
-    <!-- 1) Letter first -->
-    <div class="card">
-      <div class="row">
-        <div class="label">מכתב התפטרות</div>
-        <div class="pill">20.02.2026</div>
-      </div>
-      <div class="big orange" id="daysLetter">—</div>
-      <div class="sub" id="textLetter">טוען…</div>
-
-      <button class="btn" id="openLetter">הצג פרטי מכתב (ללא נוסח)</button>
+  <!-- 1) מכתב התפטרות -->
+  <div class="card">
+    <div class="row">
+      <div class="label">מכתב התפטרות</div>
+      <div class="pill">20.02.2026</div>
     </div>
-
-    <!-- 2) Resignation submitted (new card) -->
-    <div class="card">
-      <div class="row">
-        <div class="label">התפטרות בוצעה</div>
-        <div class="pill">✔️ סטטוס</div>
-      </div>
-      <div class="sub">כשתגיש – לחץ על הכפתור כדי לסמן שהכול הושלם.</div>
-      <button class="btn" id="toggleResign">סמן “הגשתי התפטרות”</button>
-      <div class="msg" id="resignStatus"></div>
-    </div>
-
-    <!-- 3) Start work -->
-    <div class="card">
-      <div class="row">
-        <div class="label">תחילת עבודה רשמית</div>
-        <div class="pill">07.04.2026</div>
-      </div>
-      <div class="big orange" id="daysStart">—</div>
-      <div class="sub" id="textStart">טוען…</div>
-
-      <button class="btn" id="btnEncourage">תן לי מילות עידוד</button>
-      <div class="msg" id="encourageMsg"></div>
-    </div>
+    <div class="big orange" id="cdLetter">טוען…</div>
+    <div class="sub" id="txtLetter"></div>
   </div>
 
-  <!-- Modal (no letter text) -->
-  <div class="modalBack" id="modalBack">
-    <div class="modal">
-      <h2>מכתב התפטרות</h2>
-      <p class="hint">אין כאן נוסח. רק חלון לפרטים.</p>
-      <div class="card" style="margin:0;background:#0f1620">
-        <div class="row">
-          <div class="label">תאריך יעד</div>
-          <div class="pill">20.02.2026</div>
-        </div>
-        <div class="sub" style="margin-top:10px">סטטוס: <span class="gray">לא הוגדר</span></div>
-      </div>
-      <button class="btn" id="closeModal">סגור</button>
+  <!-- 2) התפטרות מנוצלת -->
+  <div class="card">
+    <div class="row">
+      <div class="label">התפטרות מנוצלת</div>
+      <div class="pill">15.03.2026</div>
     </div>
+    <div class="big orange" id="cdResign">טוען…</div>
+    <div class="sub" id="txtResign"></div>
   </div>
 
-  <script>
-    // Fixed dates
-    var TARGET_LETTER = new Date(2026, 1, 20, 0, 0, 0, 0); // 20.02.2026
-    var TARGET_START  = new Date(2026, 3, 7, 0, 0, 0, 0);  // 07.04.2026
+  <!-- 3) תחילת עבודה -->
+  <div class="card">
+    <div class="row">
+      <div class="label">תחילת עבודה רשמית</div>
+      <div class="pill">07.04.2026</div>
+    </div>
+    <div class="big orange" id="cdStart">טוען…</div>
+    <div class="sub" id="txtStart"></div>
 
-    function todayMidnight() {
-      var now = new Date();
-      return new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0, 0);
+    <button class="btn" id="btnEncourage">תני לי מילות עידוד</button>
+    <div class="msg" id="encourageMsg"></div>
+  </div>
+</div>
+
+<script>
+  // תאריכים קבועים (כולל שעות)
+  const LETTER  = new Date(2026,1,20,0,0,0);
+  const RESIGN  = new Date(2026,2,15,0,0,0);
+  const START   = new Date(2026,3,7,0,0,0);
+
+  function diffParts(target){
+    const now = new Date();
+    let diff = Math.floor((target - now) / 1000);
+    if(diff <= 0) return null;
+
+    const d = Math.floor(diff / 86400); diff %= 86400;
+    const h = Math.floor(diff / 3600);  diff %= 3600;
+    const m = Math.floor(diff / 60);
+    const s = diff % 60;
+    return {d,h,m,s};
+  }
+
+  function fmt(p){
+    return `${p.d} ימים ${String(p.h).padStart(2,"0")}:${String(p.m).padStart(2,"0")}:${String(p.s).padStart(2,"0")}`;
+  }
+
+  function update(el, txt, target){
+    const p = diffParts(target);
+    if(!p){
+      el.textContent = "היום זה היום";
+      txt.textContent = "השלב הזה כבר מאחורייך";
+      el.className = "big green";
+    } else {
+      el.textContent = fmt(p);
+      txt.textContent = "את מתקדמת יפה, הזמן עובד לטובתך";
+      el.className = "big orange";
     }
+  }
 
-    function daysUntil(target) {
-      var t = todayMidnight();
-      return Math.floor((target - t) / (1000 * 60 * 60 * 24));
-    }
+  function render(){
+    update(cdLetter, txtLetter, LETTER);
+    update(cdResign, txtResign, RESIGN);
+    update(cdStart,  txtStart,  START);
+  }
 
-    function setView(daysEl, textEl, days) {
-      daysEl.classList.remove("green", "orange", "gray");
+  const ENCOURAGE = [
+    "את חזקה, אמיצה, ועושה צעד נכון בשבילך.",
+    "כל יום שעובר מקרב אותך לפרק החדש.",
+    "מותר לפחד – ואת עדיין מתקדמת.",
+    "את סומכת על עצמך, ובצדק.",
+    "זו החלטה בוגרת ונכונה עבורך."
+  ];
 
-      if (days > 7) {
-        daysEl.classList.add("orange");
-        daysEl.textContent = String(days);
-        textEl.textContent = "נותרו " + days + " ימים";
-        return;
-      }
-      if (days > 0) {
-        daysEl.classList.add("green");
-        daysEl.textContent = String(days);
-        textEl.textContent = (days === 1) ? "נותר יום אחד" : ("נותרו " + days + " ימים");
-        return;
-      }
-      if (days === 0) {
-        daysEl.classList.add("green");
-        daysEl.textContent = "0";
-        textEl.textContent = "היום זה היום";
-        return;
-      }
+  btnEncourage.onclick = () => {
+    encourageMsg.textContent = ENCOURAGE[Math.floor(Math.random()*ENCOURAGE.length)];
+  };
 
-      daysEl.classList.add("gray");
-      daysEl.textContent = "0";
-      textEl.textContent = "התאריך עבר";
-    }
-
-    function render() {
-      setView(
-        document.getElementById("daysLetter"),
-        document.getElementById("textLetter"),
-        daysUntil(TARGET_LETTER)
-      );
-      setView(
-        document.getElementById("daysStart"),
-        document.getElementById("textStart"),
-        daysUntil(TARGET_START)
-      );
-    }
-
-    // Resignation status (saved in browser)
-    function loadResign() {
-      var v = localStorage.getItem("resign_done");
-      return v === "1";
-    }
-    function saveResign(done) {
-      localStorage.setItem("resign_done", done ? "1" : "0");
-    }
-    function updateResignUI() {
-      var done = loadResign();
-      var btn = document.getElementById("toggleResign");
-      var text = document.getElementById("resignStatus");
-      if (done) {
-        btn.textContent = "בטל סימון (עוד לא הוגש)";
-        text.innerHTML = "<span class='green'>סומן כהוגש ✅</span>";
-      } else {
-        btn.textContent = "סמן “הגשתי התפטרות”";
-        text.innerHTML = "<span class='gray'>עדיין לא הוגש</span>";
-      }
-    }
-
-    // Encouragement messages
-    var ENCOURAGE = [
-      "את בדרך הנכונה. צעד אחד בכל פעם.",
-      "עוד קצת וזה שלך. נשאר רק לסגור פינות.",
-      "תזכורי למה התחלת. זה שווה את זה.",
-      "את לא חייבת מושלם, רק עקבי וקצת כל יום.",
-      "כל יום שעובר מקרב אותך לדבר הבא.",
-      "את חזקה. אתה מתקדמת. את מסיימת."
-    ];
-    function pickEncourage() {
-      var i = Math.floor(Math.random() * ENCOURAGE.length);
-      return ENCOURAGE[i];
-    }
-
-    // Init
-    render();
-    setInterval(render, 60000);
-
-    updateResignUI();
-
-    document.getElementById("toggleResign").addEventListener("click", function () {
-      var done = loadResign();
-      saveResign(!done);
-      updateResignUI();
-    });
-
-    document.getElementById("btnEncourage").addEventListener("click", function () {
-      document.getElementById("encourageMsg").textContent = pickEncourage();
-    });
-
-    // Modal
-    var modalBack = document.getElementById("modalBack");
-    document.getElementById("openLetter").addEventListener("click", function () {
-      modalBack.style.display = "flex";
-    });
-    document.getElementById("closeModal").addEventListener("click", function () {
-      modalBack.style.display = "none";
-    });
-    modalBack.addEventListener("click", function (e) {
-      if (e.target === modalBack) modalBack.style.display = "none";
-    });
-  </script>
+  render();
+  setInterval(render, 1000);
+</script>
 </body>
 </html>
