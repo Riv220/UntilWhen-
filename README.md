@@ -152,7 +152,7 @@
 
     // --- Targets (LETTER first, START second) ---
     const targetLetter = makeTargetDate(20, 2); // 20.02
-    const targetStart  = makeTargetDate(7, 4);    // 04.07
+    const targetStart = new Date(2026, 3, 7, 0, 0, 0, 0);   // 04.07
 
     // Pills show the actual target date (with year)
     document.getElementById("dateLetterPill").textContent = `${formatDM(targetLetter)}.${targetLetter.getFullYear()}`;
