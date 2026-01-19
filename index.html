@@ -6,57 +6,185 @@
   <title>ספירה לאחור</title>
 
   <style>
-    body{margin:0;padding:24px;background:#0b0f14;color:#e8eef6;font-family:Arial,sans-serif}
-    .wrap{max-width:600px;margin:0 auto}
-    h1{margin:0 0 18px;font-size:26px}
-    .card{background:#121a24;border:1px solid #1e2a3a;border-radius:16px;padding:16px;margin:14px 0;box-shadow:0 6px 18px rgba(0,0,0,.25)}
-    .row{display:flex;justify-content:space-between;align-items:center;gap:10px}
-    .label{opacity:.9;font-size:15px}
-    .pill{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #2a3b52;background:#0f1620}
-    .big{font-size:40px;font-weight:800;line-height:1.2;margin:12px 0}
-    .sub{opacity:.9;font-size:14px}
-    .green{color:#9ff2c3}.orange{color:#ffd08a}.gray{color:#a9b7c6}
-    .btn{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #2a3b52;background:#0f1620;color:#e8eef6;font-size:15px;cursor:pointer;margin-top:12px}
-    .msg{margin-top:10px;font-size:15px;opacity:.95}
+    :root{
+      --bg1:#140816;
+      --bg2:#2a0b2b;
+      --card:#1a0a1c;
+      --card2:#220d24;
+      --border:rgba(255,255,255,.10);
+      --text:#fff2fb;
+      --muted:rgba(255,242,251,.78);
+
+      --pink:#ff5fb7;
+      --pink2:#ff86c9;
+      --lilac:#caa4ff;
+
+      --shadow: 0 14px 40px rgba(0,0,0,.45);
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      min-height:100vh;
+      padding:24px;
+      font-family: Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 15% 10%, rgba(255,95,183,.20), transparent 55%),
+        radial-gradient(1000px 520px at 85% 15%, rgba(202,164,255,.18), transparent 55%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+    }
+
+    .wrap{ max-width:620px; margin:0 auto; }
+    h1{
+      margin:0 0 18px;
+      font-size:28px;
+      letter-spacing:.2px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .sparkle{
+      width:38px;height:38px;border-radius:12px;
+      background: linear-gradient(135deg, rgba(255,95,183,.95), rgba(202,164,255,.85));
+      display:grid;place-items:center;
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.14);
+    }
+    .sparkle span{ filter: drop-shadow(0 6px 10px rgba(0,0,0,.35)); }
+
+    .card{
+      background: linear-gradient(180deg, rgba(26,10,28,.92), rgba(34,13,36,.92));
+      border:1px solid var(--border);
+      border-radius:18px;
+      padding:16px;
+      margin:14px 0;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(8px);
+    }
+
+    .row{ display:flex; justify-content:space-between; align-items:center; gap:10px; }
+    .label{
+      opacity:.92;
+      font-size:15px;
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+
+    .pill{
+      font-size:12px;
+      padding:7px 11px;
+      border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      white-space:nowrap;
+      box-shadow: 0 8px 18px rgba(0,0,0,.25);
+    }
+
+    .big{
+      font-size:42px;
+      font-weight:900;
+      line-height:1.15;
+      margin:12px 0 8px;
+      letter-spacing:.4px;
+      text-shadow: 0 10px 24px rgba(0,0,0,.35);
+    }
+
+    .sub{ opacity:.85; font-size:14px; color: var(--muted); }
+
+    .accent{
+      background: linear-gradient(90deg, var(--pink), var(--lilac));
+      -webkit-background-clip:text;
+      background-clip:text;
+      color:transparent;
+    }
+
+    .btn{
+      width:100%;
+      padding:12px 14px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.16);
+      background: linear-gradient(135deg, rgba(255,95,183,.85), rgba(202,164,255,.75));
+      color: #2b0b2c;
+      font-size:15px;
+      font-weight:800;
+      cursor:pointer;
+      margin-top:12px;
+      box-shadow: 0 16px 34px rgba(255,95,183,.18);
+      transition: transform .08s ease, filter .15s ease;
+    }
+    .btn:hover{ filter: brightness(1.06); }
+    .btn:active{ transform: translateY(1px) scale(.99); }
+
+    .msg{
+      margin-top:10px;
+      font-size:15px;
+      opacity:.95;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.05);
+    }
+
+    .divider{
+      height:1px;
+      background: linear-gradient(90deg, transparent, rgba(255,95,183,.55), rgba(202,164,255,.55), transparent);
+      margin:14px 0 6px;
+      opacity:.65;
+    }
+
+    @media (max-width:420px){
+      .big{ font-size:34px; }
+      h1{ font-size:24px; }
+    }
   </style>
 </head>
 
 <body>
 <div class="wrap">
-  <h1>ספירה לאחור</h1>
+  <h1>
+    <div class="sparkle"><span>✨</span></div>
+    ספירה לאחור
+  </h1>
 
   <div class="card">
     <div class="row">
-      <div class="label">מכתב התפטרות</div>
+      <div class="label">💌 מכתב התפטרות</div>
       <div class="pill">20.02.2026</div>
     </div>
-    <div class="big orange" id="cdLetter">טוען…</div>
+    <div class="divider"></div>
+    <div class="big accent" id="cdLetter">טוען…</div>
     <div class="sub" id="txtLetter"></div>
   </div>
 
   <div class="card">
     <div class="row">
-      <div class="label">התפטרות מנוצלת</div>
+      <div class="label">🗓️ התפטרות מנוצלת</div>
       <div class="pill">15.03.2026</div>
     </div>
-    <div class="big orange" id="cdResign">טוען…</div>
+    <div class="divider"></div>
+    <div class="big accent" id="cdResign">טוען…</div>
     <div class="sub" id="txtResign"></div>
   </div>
 
   <div class="card">
     <div class="row">
-      <div class="label">תחילת עבודה רשמית</div>
+      <div class="label">🎀 תחילת עבודה רשמית</div>
       <div class="pill">07.04.2026</div>
     </div>
-    <div class="big orange" id="cdStart">טוען…</div>
+    <div class="divider"></div>
+    <div class="big accent" id="cdStart">טוען…</div>
     <div class="sub" id="txtStart"></div>
 
     <button class="btn" id="btnEncourage">תני לי מילות עידוד</button>
-    <div class="msg" id="encourageMsg"></div>
+    <div class="msg" id="encourageMsg" style="display:none;"></div>
   </div>
 </div>
 
 <script>
+  // Fixed dates (with time)
   const LETTER  = new Date(2026,1,20,0,0,0);
   const RESIGN  = new Date(2026,2,15,0,0,0);
   const START   = new Date(2026,3,7,0,0,0);
@@ -64,7 +192,7 @@
   function diffParts(target){
     const now = new Date();
     let diff = Math.floor((target - now) / 1000);
-    if(diff <= 0) return null;
+    if (diff <= 0) return null;
 
     const d = Math.floor(diff / 86400); diff %= 86400;
     const h = Math.floor(diff / 3600);  diff %= 3600;
@@ -77,35 +205,36 @@
     return `${p.d} ימים ${String(p.h).padStart(2,"0")}:${String(p.m).padStart(2,"0")}:${String(p.s).padStart(2,"0")}`;
   }
 
-  function update(el, txt, target){
+  function update(el, txt, target, doneMsg){
     const p = diffParts(target);
     if(!p){
       el.textContent = "היום זה היום";
-      txt.textContent = "השלב הזה כבר מאחורייך";
-      el.className = "big green";
-    } else {
-      el.textContent = fmt(p);
-      txt.textContent = "את מתקדמת יפה, הזמן עובד לטובתך";
-      el.className = "big orange";
+      txt.textContent = doneMsg;
+      return;
     }
+    el.textContent = fmt(p);
+    txt.textContent = "את מתקדמת יפה, עוד קצת וזה מאחורייך 💗";
   }
 
   function render(){
-    update(cdLetter, txtLetter, LETTER);
-    update(cdResign, txtResign, RESIGN);
-    update(cdStart,  txtStart,  START);
+    update(cdLetter, txtLetter, LETTER, "סגרנו את זה. קדימה לשלב הבא ✨");
+    update(cdResign, txtResign, RESIGN, "מעולה. את על זה 💪💞");
+    update(cdStart,  txtStart,  START,  "מזל טוב! התחלת פרק חדש 🎀");
   }
 
   const ENCOURAGE = [
-    "את חזקה, אמיצה, ועושה צעד נכון בשבילך.",
-    "כל יום שעובר מקרב אותך לפרק החדש.",
-    "מותר לפחד – ואת עדיין מתקדמת.",
-    "את סומכת על עצמך, ובצדק.",
-    "זו החלטה בוגרת ונכונה עבורך."
+    "את חזקה, אמיצה, ועושה צעד נכון בשבילך 💗",
+    "כל יום שעובר מקרב אותך לפרק החדש ✨",
+    "מותר לפחד – ואת עדיין מתקדמת 🫶",
+    "את סומכת על עצמך, ובצדק 💞",
+    "זו החלטה בוגרת ונכונה עבורך 🌸",
+    "את תסתדרי מעולה. באמת. 🎀"
   ];
 
   btnEncourage.onclick = () => {
-    encourageMsg.textContent = ENCOURAGE[Math.floor(Math.random()*ENCOURAGE.length)];
+    const box = encourageMsg;
+    box.style.display = "block";
+    box.textContent = ENCOURAGE[Math.floor(Math.random()*ENCOURAGE.length)];
   };
 
   render();
